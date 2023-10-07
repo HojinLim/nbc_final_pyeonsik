@@ -8,10 +8,14 @@ import { useInView } from 'react-intersection-observer';
 import { InfinityProductList } from 'src/types/types';
 import { FlexBoxAlignCenter } from 'src/styles/styleBox';
 import ProdSkeleton from '../skeleton/ProdSkeleton';
+import { useMediaQuery } from 'react-responsive';
 
 const ProdList = () => {
   const location = useLocation();
   const [isProdLoading, setIsProdLoading] = useState<Boolean>(true);
+    // 화면 크기에 따른 반응형
+    const isDeskTop = useMediaQuery({ minWidth: 915 });
+    const containerWidth = isDeskTop ? '100%' : '50%';
 
   let brandParam: string;
   if (location.search === '') {
@@ -61,7 +65,7 @@ const ProdList = () => {
           <ProdSkeleton />
         </>
       )}
-      <S.Container>
+      <S.Container style={{width: containerWidth}}>
         {products?.map((item) => {
           return <ProdCard key={item.id} data={item} />;
         })}
@@ -74,6 +78,7 @@ const ProdList = () => {
 export default ProdList;
 
 const S = {
+  
   Container: styled(FlexBoxAlignCenter)`
     width: 100%;
     align-content: center;

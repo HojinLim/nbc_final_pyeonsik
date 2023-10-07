@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router';
 import TagImage from 'src/components/imageTag/ShowTag';
 import { styleFont } from 'src/styles/styleFont';
@@ -11,9 +12,12 @@ interface ContentBoxProps {
 const ContentBox = ({ post }: ContentBoxProps) => {
   const { pathname } = useLocation();
 
+  // 화면 크기에 따라 Container의 너비를 설정
+  const isDeskTop = useMediaQuery({ minWidth: 915 });
+
   return (
     <>
-      {post.title && <S.PostTitle>{post.title}</S.PostTitle>}
+      {post.title && <S.PostTitle isDeskTop={isDeskTop}>{post.title}</S.PostTitle>}
       {post.postCategory === 'common' && (
         <S.PostBodyCommon $location={pathname} dangerouslySetInnerHTML={{ __html: post.body }} />
       )}
@@ -123,15 +127,22 @@ export const S = {
     padding-bottom: 100px;
   `,
 
-  PostTitle: styled.div`
-    width: 790px;
+  PostTitle: styled.div<{ isDeskTop: boolean }>`
+      width: ${(props) => (props.isDeskTop ? '790px' : '500px')};
     margin: 36px 0px 0px 0px;
 
     display: flex;
     align-items: center;
 
     color: var(--black, #242424);
-    ${styleFont.titleLarge}
+    ${(props) =>
+      props.isDeskTop
+        ? css`
+            ${styleFont.titleLarge}
+          `
+        : css`
+            ${styleFont.titleSmall}
+          `};
   `,
 
   PostBodyCommon: styled.pre<BodyHeightProps>`

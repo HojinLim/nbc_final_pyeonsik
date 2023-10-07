@@ -9,6 +9,7 @@ import BottomFunction from '../post/detail/BottomFunction';
 import useLoginUserId from 'src/hooks/useLoginUserId';
 import BestComment from './reactionSource/BestComment';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive';
 
 interface Props {
   item: Post;
@@ -21,9 +22,13 @@ const PostForMain = ({ item: postData }: Props) => {
   const post = useMemo(() => postData, [postData]);
   const writer = post?.userId;
 
+  // 화면 크기에 따라 Container의 너비를 설정
+  const isDeskTop = useMediaQuery({ minWidth: 915 });
+  const containerWidth = isDeskTop ? '890px' : '600px';
+
   return (
     <AnimatePresence>
-      <S.Container key={postData.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <S.Container key={postData.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{width: containerWidth}}>
         <S.Head>
           <WriterContainer post={post} writer={writer} />
         </S.Head>
@@ -36,7 +41,7 @@ const PostForMain = ({ item: postData }: Props) => {
               onClick={() => navigate(`/detail/${postData.id}`, { state: { backgroundLocation: location } })}
             >
               <S.ContentArea>
-                <S.ContentBox>
+                <S.ContentBox style={{width: containerWidth}}>
                   <ContentBox post={post} />
                 </S.ContentBox>
                 <S.BottomContainer>

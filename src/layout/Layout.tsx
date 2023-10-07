@@ -6,12 +6,14 @@ import styled, { css } from 'styled-components';
 import { FlexBoxCenter, FlexBoxColum } from 'src/styles/styleBox';
 import { IconTopButton } from 'src/components/icons';
 
+import { useMediaQuery } from 'react-responsive';
+
 const Layout = () => {
   const location = useLocation();
   const path = location.pathname.split('/')[1];
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-
+  const isDeskTop = useMediaQuery({ minWidth: 1200 });
   const Top = () => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
@@ -25,12 +27,21 @@ const Layout = () => {
       ) : (
         <>
           <Header />
+
           <S.BottomContainer $path={path} ref={containerRef}>
             <S.Container id="scroll">
               <S.ContentsArea $path={path}>
                 <Outlet />
               </S.ContentsArea>
-              {path === 'login' || path === 'register' || path === 'detail' || path === 'report' ? <></> : <SideBar />}
+              {path === 'login' || path === 'register' || path === 'detail' || path === 'report' ? (
+                <></>
+              ) : (
+                isDeskTop && (
+                  <>
+                    <SideBar />
+                  </>
+                )
+              )}
             </S.Container>
           </S.BottomContainer>
           <S.TopButton onClick={Top}>

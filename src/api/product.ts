@@ -3,6 +3,7 @@ import { InfinityProductList, Product } from 'src/types/types';
 
 const getEventProd = async (pageParam: number = 0, brandParam: string): Promise<InfinityProductList> => {
   let response;
+  
   if (brandParam === 'all') {
     response = await supabase
       .from('products')

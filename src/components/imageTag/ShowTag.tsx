@@ -7,6 +7,7 @@ import { ReactComponent as TagIcon } from 'src/components/imageTag/svg/TagIcon.s
 import { S } from './StyledShowTag';
 import { IconArrow, IconUnArrow } from '../icons';
 import { setBrandName } from 'src/function/setBrandName';
+import { useMediaQuery } from 'react-responsive';
 
 const TagImage = ({ imageUrl, recipeBody, tagsForImage }: TagImageProps) => {
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
@@ -21,11 +22,14 @@ const TagImage = ({ imageUrl, recipeBody, tagsForImage }: TagImageProps) => {
   const handleProductMouseLeave = () => {
     setHoveredProductIndex(null);
   };
+  // 화면 크기에 따라 Container의 너비를 설정
+  const isDeskTop = useMediaQuery({ minWidth: 915 });
+  const size = isDeskTop ? '790px' : '500px';
 
   return (
     <S.ImageContainer>
       <div onMouseEnter={() => setIsMouseOverImage(true)} onMouseLeave={() => setIsMouseOverImage(false)}>
-        <S.Image src={imageUrl} alt={imageUrl} />
+        <S.Image src={imageUrl} alt={imageUrl} style={{width: size, height: size}}/>
         {tagsForImage?.map((tag, tagIndex) => (
           <S.TagContainer
             key={tagIndex}
@@ -109,8 +113,8 @@ export const withCustomStatusArrowsAndIndicators = () => {
     position: 'absolute',
     zIndex: 2,
     top: 'calc(50% - 15px)',
-    width: 30,
-    height: 30,
+    width: 15,
+    height: 15,
     cursor: 'pointer'
   };
 
